@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>后台登录</title>
+</head>
+<style>
+    body, html {
+        height: 100%;
+        object-fit: cover;
+    }
+
+    body {
+        background: url(/static/images/manage_back.jpg) center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .login {
+        margin: 50px auto 0 auto;
+        max-width: 420px;
+        padding: 40px;
+        background-color: #ffffff;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 4px;
+        /* overflow-x: hidden; */
+        box-sizing: border-box;
+    }
+
+    input[type=text],
+    input[type=file],
+    input[type=password],
+    input[type=email], select {
+        border: 1px solid #DCDEE0;
+        vertical-align: middle;
+        border-radius: 3px;
+        height: 25px;
+        padding: 0px 16px;
+        font-size: 20px;
+        color: #555555;
+        outline: none;
+        width: 100%;
+    }
+
+    table {
+        margin: auto;
+        text-align: center;
+        width: 60%;
+        padding: 8px;
+        vertical-align: top;
+        border-top-width: 1px;
+        font-size: 25px;
+        border-color: #b6ff00;
+        line-height: 25px;
+        border-collapse: collapse;
+    }
+</style>
+<body>
+<div class="login">
+    {% ifequal reason '' %}
+    {% else %}
+        <span style="color: red">{{ reason }}</span>
+    {% endifequal %}
+    <form enctype="multipart/form-data" action="add_pic" method="post">
+        {% csrf_token %}
+        <label>上传文件：</label>
+        <input type="file" name="img"/>
+        <label>文件命名：</label>
+        <input type="text" minlength="1" name="name"/>
+        <br/>
+        <input type="submit" value="上传"/>
+    </form>
+</div>
+<hr>
+<table style="border-collapse:collapse;">
+    <tr>
+        <td>文件名称</td>
+        <td>文件图像(点击查看大图)</td>
+        <td>上传时间</td>
+        <td>操作</td>
+    </tr>
+    {% for item in pics %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td><a href="{{ item.img_url.url }}" target="_blank">
+                <img src="{{ item.img_url.url }}" width="150px" height="150px"/>
+            </a></td>
+            <td>{{ item.time }}</td>
+            <td><a href="delete_pic/?qid={{ item.id }}">删除</a></td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
