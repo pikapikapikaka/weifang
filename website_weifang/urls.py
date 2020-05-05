@@ -18,8 +18,10 @@ from django.urls import path
 from django.conf.urls import url, include
 from django.views.static import serve  # 导入相关静态文件处理的views控制包
 from django.conf import settings  # 导入项目文件夹中setting中的MEDIA_ROOT绝对路径
+from app_website import views
 
 urlpatterns = [
+    path('', views.index),
     path('admin/', admin.site.urls),
     path('weifang/', include('app_website.urls')),
     url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
